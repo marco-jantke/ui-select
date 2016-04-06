@@ -295,6 +295,13 @@ uis.directive('uiSelect',
         scope.$watch('$select.open', function() {
 
           if ($select.dropdownPosition === 'auto' || $select.dropdownPosition === 'up'){
+            // Hide the dropdown to avoid flickering on initial opening
+            dropdown = angular.element(element).querySelectorAll('.ui-select-dropdown');
+
+            if (dropdown.length > 0) {
+              dropdown[0].style.opacity = 0;
+            }
+
             scope.calculateDropdownPos();
           }
 
@@ -330,9 +337,6 @@ uis.directive('uiSelect',
             if (dropdown.length === 0) {
               return;
             }
-
-            // Hide the dropdown so there is no flicker until $timeout is done executing.
-            dropdown[0].style.opacity = 0;
 
             // Delay positioning the dropdown until all choices have been added so its height is correct.
             $timeout(function(){
